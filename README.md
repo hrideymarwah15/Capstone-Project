@@ -48,7 +48,7 @@ The purpose of this project is to build a real-time data-driven web application 
 
 ## 🌐 APIs Used
 
-### Ergast F1 API
+### Ergast F1 API/f1-data
 
 Provides:
 
@@ -59,7 +59,7 @@ Provides:
 Base URL:
 http://ergast.com/api/f1
 
-### Live Timing Data Layer
+### Live Timing Data Layer/f1-data
 
 Real-time race updates are handled through continuous data fetching and state updates to simulate live telemetry and positional changes.
 
