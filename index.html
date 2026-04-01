@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F1 Race Intelligence Platform - Milestone 2</title>
+    <link rel="stylesheet" href="src/style.css">
+</head>
+<body>
+    <header>
+        <h1>🏎️ F1 Race Intelligence Platform</h1>
+        <p>Live Driver Standings & Tracker</p>
+        
+        <!-- Added Controls UI -->
+        <div class="controls-container">
+            <input type="text" id="search-input" class="search-bar" placeholder="Search driver or team...">
+            <button id="theme-toggle" class="btn theme-btn">🌙 Dark Mode</button>
+        </div>
+    </header>
+
+    <main>
+        <!-- Loading State Indicator -->
+        <div id="loading" class="status-message">
+            Fetching live F1 driver standings... 🏁
+        </div>
+
+        <!-- Error State Indicator -->
+        <div id="error" class="status-message error hidden">
+            Failed to retrieve data. Please check your connection and try again.
+        </div>
+
+        <!-- Dashboard Content Grid -->
+        <div id="standings-container" class="dashboard hidden">
+            <!-- Cards will be dynamically injected here via JS -->
+        </div>
+    </main>
+
+    <script src="src/app.js"></script>
+</body>
+</html>

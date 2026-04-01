@@ -67,7 +67,7 @@ Real-time race updates are handled through continuous data fetching and state up
 
 ## 🛠️ Technologies Used
 
-* React.js
+* Vanilla JavaScript (Milestone 2 implementation)
 * JavaScript (ES6+)
 * HTML5
 * CSS3
@@ -130,7 +130,7 @@ npm install
 ### Run the development server
 
 ```bash
-npm run dev
+open index.html
 ```
 
 ### Access the application
