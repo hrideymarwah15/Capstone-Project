@@ -1,7 +1,4 @@
-// app.js - Milestone 2 & 3 Features (Simple)
-const API_URL = 'https://api.jolpi.ca/ergast/f1/current/driverStandings.json';
-
-// Global Data Store
+const API_URL = 'https://api.openf1.org/v1/drivers?session_key=latest';
 let allDrivers = [];
 
 // DOM Elements
@@ -11,16 +8,19 @@ const standingsContainer = document.getElementById('standings-container');
 const searchInput = document.getElementById('search-input');
 const themeToggle = document.getElementById('theme-toggle');
 
-// 1. Fetching Data using API (Milestone 2)
+// Fetch Data Using OpenF1 API
 async function fetchF1Data() {
     try {
         loadingIndicator.classList.remove('hidden');
         
+        // Fetch from OpenF1 Drivers endpoint (Latest Session)
         const response = await fetch(API_URL);
         if (!response.ok) throw new Error('Failed to fetch API data');
         
         const data = await response.json();
-        allDrivers = data.MRData.StandingsTable.StandingsLists[0].DriverStandings;
+        
+        // OpenF1 returns an array of driver objects.
+        allDrivers = data;
         
         renderDrivers(allDrivers);
         
@@ -33,7 +33,7 @@ async function fetchF1Data() {
     }
 }
 
-// 2. Rendering Data using `.forEach()` (Array HOF Requirement)
+// Render Data
 function renderDrivers(drivers) {
     standingsContainer.innerHTML = '';
     
@@ -46,28 +46,29 @@ function renderDrivers(drivers) {
         const card = document.createElement('div');
         card.classList.add('driver-card');
         
-        const teamName = driver.Constructors[0]?.name || 'Unknown Team';
-        const fullName = `${driver.Driver.givenName} ${driver.Driver.familyName}`;
+        const teamName = driver.team_name || 'Unknown Team';
+        const fullName = driver.full_name || 'Driver';
 
         card.innerHTML = `
-            <h2>#${driver.position} - ${fullName}</h2>
+            <h2>#${driver.driver_number} - ${fullName}</h2>
             <p class="driver-info"><strong>Team:</strong> ${teamName}</p>
-            <p class="driver-info"><strong>Nationality:</strong> ${driver.Driver.nationality}</p>
-            <div class="points-badge">${driver.points} PTS</div>
+            <p class="driver-info"><strong>Acronym:</strong> ${driver.name_acronym}</p>
+            <p class="driver-info"><strong>Broadcast Name:</strong> ${driver.broadcast_name}</p>
+            <div class="points-badge">${teamName}</div>
         `;
         
         standingsContainer.appendChild(card);
     });
 }
 
-// 3. Search & Filtering using `.filter()` (Array HOF Requirement)
+// Search & Filtering
 if (searchInput) {
     searchInput.addEventListener('input', (e) => {
         const term = e.target.value.toLowerCase();
         
         const filteredDrivers = allDrivers.filter(driver => {
-            const fullName = `${driver.Driver.givenName} ${driver.Driver.familyName}`.toLowerCase();
-            const team = (driver.Constructors[0]?.name || '').toLowerCase();
+            const fullName = (driver.full_name || '').toLowerCase();
+            const team = (driver.team_name || '').toLowerCase();
             
             return fullName.includes(term) || team.includes(term);
         });
@@ -76,18 +77,12 @@ if (searchInput) {
     });
 }
 
-// 4. Dark Mode / Light Mode Toggle (Button Interactions Requirement)
+// Dark Mode
 if (themeToggle) {
     themeToggle.addEventListener('click', () => {
         document.body.classList.toggle('dark-mode');
-        
-        if (document.body.classList.contains('dark-mode')) {
-            themeToggle.textContent = '☀️ Light Mode';
-        } else {
-            themeToggle.textContent = '🌙 Dark Mode';
-        }
+        themeToggle.textContent = document.body.classList.contains('dark-mode') ? '☀️ Light Mode' : '🌙 Dark Mode';
     });
 }
 
-// Initialize on load
 fetchF1Data();

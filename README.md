@@ -31,11 +31,10 @@ The purpose of this project is to build a real-time data-driven web application 
 
 ### 📊 Analytics Dashboard
 
-* Live driver standings
-* Constructor standings
-* Sorting by points, rank, and performance metrics
-* Filtering by teams
-* Real-time updates reflected in analytics
+* Feature: Active Drivers Roster via OpenF1 (`/v1/drivers`)
+* Feature: Constructor Team insights (implied via OpenF1 telemetry/driver info)
+* Sorting and Filtering by teams
+* Real-time search by driver name and team Name
 
 ### 🔍 Data Interaction
 
@@ -48,20 +47,12 @@ The purpose of this project is to build a real-time data-driven web application 
 
 ## 🌐 APIs Used
 
-### Ergast F1 API/f1-data
+### OpenF1 API
 
-Provides:
+Provides live telemetry, car positioning, driver info, and session timings directly from F1 sessions. 
+This project uses the `https://api.openf1.org/v1/` endpoint to fetch the latest session drivers and standings details, including the driver profiles, telemetry information, and constructive session details.
 
-* Race schedules
-* Driver standings
-* Constructor standings
-
-Base URL:
-http://ergast.com/api/f1
-
-### Live Timing Data Layer/f1-data
-
-Real-time race updates are handled through continuous data fetching and state updates to simulate live telemetry and positional changes.
+Read more at: [https://github.com/br-g/openf1](https://github.com/br-g/openf1)
 
 ---
 
