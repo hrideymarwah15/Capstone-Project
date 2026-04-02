@@ -1,28 +1,39 @@
-const API_URL = 'https://api.openf1.org/v1/drivers?session_key=latest';
-let allDrivers = [];
+// using Jolpi API because OpenF1 doesn't offer Championship Standings
+const DRIVER_URL = 'https://api.jolpi.ca/ergast/f1/current/driverStandings.json';
+const CONSTRUCTOR_URL = 'https://api.jolpi.ca/ergast/f1/current/constructorStandings.json';
 
-// DOM Elements
+let currentData = [];
+let currentType = 'drivers'; // 'drivers' or 'constructors'
+
 const loadingIndicator = document.getElementById('loading');
 const errorMessage = document.getElementById('error');
 const standingsContainer = document.getElementById('standings-container');
 const searchInput = document.getElementById('search-input');
 const themeToggle = document.getElementById('theme-toggle');
 
-// Fetch Data Using OpenF1 API
-async function fetchF1Data() {
+const tabDrivers = document.getElementById('tab-drivers');
+const tabConstructors = document.getElementById('tab-constructors');
+
+async function fetchStandings(type) {
     try {
+        currentType = type;
         loadingIndicator.classList.remove('hidden');
+        standingsContainer.classList.add('hidden');
+        errorMessage.classList.add('hidden');
         
-        // Fetch from OpenF1 Drivers endpoint (Latest Session)
-        const response = await fetch(API_URL);
-        if (!response.ok) throw new Error('Failed to fetch API data');
+        const url = type === 'drivers' ? DRIVER_URL : CONSTRUCTOR_URL;
+        const response = await fetch(url);
         
+        if (!response.ok) throw new Error('API request failed');
         const data = await response.json();
         
-        // OpenF1 returns an array of driver objects.
-        allDrivers = data;
+        if (type === 'drivers') {
+            currentData = data.MRData.StandingsTable.StandingsLists[0].DriverStandings;
+        } else {
+            currentData = data.MRData.StandingsTable.StandingsLists[0].ConstructorStandings;
+        }
         
-        renderDrivers(allDrivers);
+        renderCards(currentData);
         
         loadingIndicator.classList.add('hidden');
         standingsContainer.classList.remove('hidden');
@@ -33,55 +44,79 @@ async function fetchF1Data() {
     }
 }
 
-// Render Data
-function renderDrivers(drivers) {
+function renderCards(dataSet) {
     standingsContainer.innerHTML = '';
     
-    if (drivers.length === 0) {
+    if (dataSet.length === 0) {
         standingsContainer.innerHTML = '<p class="status-message" style="grid-column: 1/-1;">No results found.</p>';
         return;
     }
 
-    drivers.forEach(driver => {
+    dataSet.forEach(item => {
         const card = document.createElement('div');
         card.classList.add('driver-card');
         
-        const teamName = driver.team_name || 'Unknown Team';
-        const fullName = driver.full_name || 'Driver';
-
-        card.innerHTML = `
-            <h2>#${driver.driver_number} - ${fullName}</h2>
-            <p class="driver-info"><strong>Constructor Team:</strong> ${teamName}</p>
-            <p class="driver-info"><strong>Driver Acronym:</strong> ${driver.name_acronym}</p>
-            <div class="points-badge">${teamName} Racing</div>
-        `;
+        if (currentType === 'drivers') {
+            const fullName = `${item.Driver.givenName} ${item.Driver.familyName}`;
+            const team = item.Constructors[0]?.name || 'Unknown';
+            card.innerHTML = `
+                <h2>#${item.position} - ${fullName}</h2>
+                <p class="driver-info"><strong>Team:</strong> ${team}</p>
+                <p class="driver-info"><strong>Nationality:</strong> ${item.Driver.nationality}</p>
+                <p class="driver-info"><strong>Wins:</strong> ${item.wins}</p>
+                <div class="points-badge">${item.points} PTS</div>
+            `;
+        } else {
+            const teamName = item.Constructor.name;
+            const nationality = item.Constructor.nationality;
+            card.innerHTML = `
+                <h2>#${item.position} - ${teamName}</h2>
+                <p class="driver-info"><strong>Nationality:</strong> ${nationality}</p>
+                <p class="driver-info"><strong>Wins:</strong> ${item.wins}</p>
+                <div class="points-badge">${item.points} PTS</div>
+            `;
+        }
         
         standingsContainer.appendChild(card);
     });
 }
 
-// Search & Filtering
-if (searchInput) {
-    searchInput.addEventListener('input', (e) => {
-        const term = e.target.value.toLowerCase();
-        
-        const filteredDrivers = allDrivers.filter(driver => {
-            const fullName = (driver.full_name || '').toLowerCase();
-            const team = (driver.team_name || '').toLowerCase();
-            
-            return fullName.includes(term) || team.includes(term);
-        });
-        
-        renderDrivers(filteredDrivers);
+// Search Feature HOF `filter()`
+searchInput.addEventListener('input', (e) => {
+    const term = e.target.value.toLowerCase();
+    
+    const filtered = currentData.filter(item => {
+        if (currentType === 'drivers') {
+            const name = `${item.Driver.givenName} ${item.Driver.familyName}`.toLowerCase();
+            const team = (item.Constructors[0]?.name || '').toLowerCase();
+            return name.includes(term) || team.includes(term);
+        } else {
+            return item.Constructor.name.toLowerCase().includes(term);
+        }
     });
-}
+    
+    renderCards(filtered);
+});
 
-// Dark Mode
-if (themeToggle) {
-    themeToggle.addEventListener('click', () => {
-        document.body.classList.toggle('dark-mode');
-        themeToggle.textContent = document.body.classList.contains('dark-mode') ? '☀️ Light Mode' : '🌙 Dark Mode';
-    });
-}
+// UI Toggles
+tabDrivers.addEventListener('click', () => {
+    searchInput.value = '';
+    tabDrivers.classList.add('active-tab');
+    tabConstructors.classList.remove('active-tab');
+    fetchStandings('drivers');
+});
 
-fetchF1Data();
+tabConstructors.addEventListener('click', () => {
+    searchInput.value = '';
+    tabConstructors.classList.add('active-tab');
+    tabDrivers.classList.remove('active-tab');
+    fetchStandings('constructors');
+});
+
+themeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+    themeToggle.textContent = document.body.classList.contains('dark-mode') ? '☀️ Light Mode' : '🌙 Dark Mode';
+});
+
+// Init
+fetchStandings('drivers');

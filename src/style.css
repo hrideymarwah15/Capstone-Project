@@ -157,3 +157,18 @@ main {
     color: white;
     border-color: #555;
 }
+
+/* Active Tab Styles */
+.active-tab {
+    background-color: var(--accent-red);
+    color: white;
+    border-bottom: 2px solid white;
+}
+
+.dark-mode .btn {
+    color: white; /* Fixes dark mode button text color */
+}
+
+.dark-mode .active-tab {
+    background-color: #ff3333;
+}
