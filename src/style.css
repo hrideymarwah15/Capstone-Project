@@ -172,3 +172,9 @@ main {
 .dark-mode .active-tab {
     background-color: #ff3333;
 }
+
+/* Fix Points Badge visibility in Dark Mode */
+.dark-mode .points-badge {
+    background-color: #444;
+    color: #fff;
+}
