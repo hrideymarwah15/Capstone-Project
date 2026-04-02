@@ -51,10 +51,9 @@ function renderDrivers(drivers) {
 
         card.innerHTML = `
             <h2>#${driver.driver_number} - ${fullName}</h2>
-            <p class="driver-info"><strong>Team:</strong> ${teamName}</p>
-            <p class="driver-info"><strong>Acronym:</strong> ${driver.name_acronym}</p>
-            <p class="driver-info"><strong>Broadcast Name:</strong> ${driver.broadcast_name}</p>
-            <div class="points-badge">${teamName}</div>
+            <p class="driver-info"><strong>Constructor Team:</strong> ${teamName}</p>
+            <p class="driver-info"><strong>Driver Acronym:</strong> ${driver.name_acronym}</p>
+            <div class="points-badge">${teamName} Racing</div>
         `;
         
         standingsContainer.appendChild(card);
