@@ -1,4 +1,3 @@
-// using Jolpi API because OpenF1 doesn't offer Championship Standings
 const DRIVER_URL = 'https://api.jolpi.ca/ergast/f1/current/driverStandings.json';
 const CONSTRUCTOR_URL = 'https://api.jolpi.ca/ergast/f1/current/constructorStandings.json';
 
@@ -64,7 +63,10 @@ function renderCards(dataSet) {
                 <p class="driver-info"><strong>Team:</strong> ${team}</p>
                 <p class="driver-info"><strong>Nationality:</strong> ${item.Driver.nationality}</p>
                 <p class="driver-info"><strong>Wins:</strong> ${item.wins}</p>
-                <div class="points-badge">${item.points} PTS</div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
+                    <div class="points-badge" style="margin-top: 0;">${item.points} PTS</div>
+                    <a href="driver.html?id=${item.Driver.driverId}" class="btn" style="text-decoration: none; font-size: 0.9rem; padding: 0.4rem 0.8rem;">View Profile</a>
+                </div>
             `;
         } else {
             const teamName = item.Constructor.name;
@@ -81,7 +83,6 @@ function renderCards(dataSet) {
     });
 }
 
-// Search Feature HOF `filter()`
 searchInput.addEventListener('input', (e) => {
     const term = e.target.value.toLowerCase();
     
@@ -98,7 +99,6 @@ searchInput.addEventListener('input', (e) => {
     renderCards(filtered);
 });
 
-// UI Toggles
 tabDrivers.addEventListener('click', () => {
     searchInput.value = '';
     tabDrivers.classList.add('active-tab');
@@ -118,5 +118,4 @@ themeToggle.addEventListener('click', () => {
     themeToggle.textContent = document.body.classList.contains('dark-mode') ? '☀️ Light Mode' : '🌙 Dark Mode';
 });
 
-// Init
 fetchStandings('drivers');

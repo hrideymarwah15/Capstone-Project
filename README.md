@@ -47,12 +47,14 @@ The purpose of this project is to build a real-time data-driven web application 
 
 ## 🌐 APIs Used
 
-### OpenF1 API
+### Jolpi API (Ergast Developer API Mirror)
 
-Provides live telemetry, car positioning, driver info, and session timings directly from F1 sessions. 
-This project uses the `https://api.openf1.org/v1/` endpoint to fetch the latest session drivers and standings details, including the driver profiles, telemetry information, and constructive session details.
+The project heavily utilizes the **Jolpi API**, which is a reliable mirror of the historic and beloved Ergast F1 API. It provides comprehensive endpoints for getting full Championship Leaderboards (Driver & Constructor) along with individual driver-specific metadata and performance metrics.
 
-Read more at: [https://github.com/br-g/openf1](https://github.com/br-g/openf1)
+**🔑 API Keys:** 
+**NO API KEYS ARE REQUIRED.** The Jolpi Ergast API is a fully open public endpoint (`https://api.jolpi.ca/ergast/f1/...`), fulfilling the course requirements of consuming a public API completely unobstructed.
+
+Documentation at: [https://jolpi.ca/ergast/](https://jolpi.ca/ergast/)
 
 ---
 
