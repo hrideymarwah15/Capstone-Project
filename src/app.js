@@ -60,9 +60,11 @@ function renderCards(dataSet) {
             const team = item.Constructors[0]?.name || 'Unknown';
             card.innerHTML = `
                 <h2>#${item.position} - ${fullName}</h2>
-                <p class="driver-info"><strong>Team:</strong> ${team}</p>
-                <p class="driver-info"><strong>Nationality:</strong> ${item.Driver.nationality}</p>
-                <p class="driver-info"><strong>Wins:</strong> ${item.wins}</p>
+                <div style="flex-grow: 1;">
+                    <p class="driver-info"><strong>Team:</strong> ${team}</p>
+                    <p class="driver-info"><strong>Nationality:</strong> ${item.Driver.nationality}</p>
+                    <p class="driver-info"><strong>Wins:</strong> ${item.wins}</p>
+                </div>
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
                     <div class="points-badge" style="margin-top: 0;">${item.points} PTS</div>
                     <a href="driver.html?id=${item.Driver.driverId}" class="btn" style="text-decoration: none; font-size: 0.9rem; padding: 0.4rem 0.8rem;">View Profile</a>
@@ -73,9 +75,13 @@ function renderCards(dataSet) {
             const nationality = item.Constructor.nationality;
             card.innerHTML = `
                 <h2>#${item.position} - ${teamName}</h2>
-                <p class="driver-info"><strong>Nationality:</strong> ${nationality}</p>
-                <p class="driver-info"><strong>Wins:</strong> ${item.wins}</p>
-                <div class="points-badge">${item.points} PTS</div>
+                <div style="flex-grow: 1;">
+                    <p class="driver-info"><strong>Nationality:</strong> ${nationality}</p>
+                    <p class="driver-info"><strong>Wins:</strong> ${item.wins}</p>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
+                    <div class="points-badge" style="margin-top: 0;">${item.points} PTS</div>
+                </div>
             `;
         }
         
@@ -113,9 +119,17 @@ tabConstructors.addEventListener('click', () => {
     fetchStandings('constructors');
 });
 
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme === 'dark') {
+    document.body.classList.add('dark-mode');
+    if (themeToggle) themeToggle.textContent = '☀️ Light Mode';
+}
+
 themeToggle.addEventListener('click', () => {
     document.body.classList.toggle('dark-mode');
-    themeToggle.textContent = document.body.classList.contains('dark-mode') ? '☀️ Light Mode' : '🌙 Dark Mode';
+    const isDark = document.body.classList.contains('dark-mode');
+    themeToggle.textContent = isDark ? '☀️ Light Mode' : '🌙 Dark Mode';
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
 });
 
 fetchStandings('drivers');

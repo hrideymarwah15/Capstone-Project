@@ -1,43 +1,205 @@
-
 :root {
-    --bg-color: #f4f4f9;
-    --text-color: #2c3e50;
-    --accent-red: #e10600; 
+    --bg-color: #f4f5f7;
+    --text-color: #111827;
+    --accent-red: #e10600; /* F1 Red */
     --card-bg: #ffffff;
+    --card-border: #e5e7eb;
+    --btn-bg: #1f2937;
+    --btn-hover: #374151;
+    --btn-text: #ffffff;
+    --input-bg: #ffffff;
+    --input-border: #d1d5db;
+    --transition-speed: 0.3s;
+}
+
+.dark-mode {
+    --bg-color: #111827;
+    --text-color: #f9fafb;
+    --accent-red: #e10600;
+    --card-bg: #1f2937;
+    --card-border: #374151;
+    --btn-bg: #374151;
+    --btn-hover: #4b5563;
+    --btn-text: #ffffff;
+    --input-bg: #1f2937;
+    --input-border: #4b5563;
 }
 
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif;
 }
 
 body {
     background-color: var(--bg-color);
     color: var(--text-color);
+    font-family: 'Inter', sans-serif;
+    transition: background-color var(--transition-speed), color var(--transition-speed);
+    line-height: 1.5;
 }
 
+h1, h2, h3 {
+    font-family: 'Racing Sans One', sans-serif;
+    letter-spacing: 1px;
+}
+
+/* Header */
 header {
-    background-color: var(--accent-red);
-    color: white;
-    padding: 1.5rem;
+    background-color: #111827;
+    color: #ffffff;
+    padding: 2.5rem 1rem;
     text-align: center;
+    border-bottom: 4px solid var(--accent-red);
+    position: relative;
 }
 
 header h1 {
-    font-size: 2rem;
+    font-size: 2.5rem;
     margin-bottom: 0.5rem;
+    text-transform: uppercase;
 }
 
 header p {
-    font-weight: 300;
+    font-weight: 400;
+    color: #9ca3af;
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
 }
 
+/* Controls */
+.controls-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+}
+
+.search-bar {
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--input-border);
+    border-radius: 8px;
+    font-size: 1rem;
+    width: 100%;
+    max-width: 320px;
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    outline: none;
+    transition: border-color var(--transition-speed);
+    font-family: 'Inter', sans-serif;
+}
+
+.search-bar:focus {
+    border-color: var(--accent-red);
+}
+
+.btn {
+    padding: 0.75rem 1.25rem;
+    background-color: var(--btn-bg);
+    color: var(--btn-text);
+    border: 1px solid transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all var(--transition-speed);
+    font-family: 'Inter', sans-serif;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn:hover {
+    background-color: var(--btn-hover);
+    transform: translateY(-2px);
+}
+
+.active-tab {
+    background-color: var(--accent-red);
+    font-weight: 600;
+    box-shadow: 0 4px 14px rgba(225, 6, 0, 0.4);
+}
+
+.active-tab:hover {
+    background-color: #ff1a1a;
+}
+
+/* Main Layout */
 main {
-    max-width: 1200px;
-    margin: 2rem auto;
-    padding: 0 1rem;
+    max-width: 1280px;
+    margin: 2.5rem auto;
+    padding: 0 1.5rem;
+}
+
+/* Dashboard Grid */
+.dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Driver/Constructor Cards */
+.driver-card {
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 1px solid var(--card-border);
+    border-top: 4px solid var(--accent-red);
+    display: flex;
+    flex-direction: column;
+}
+
+.driver-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.driver-card h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--text-color);
+}
+
+.driver-info {
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+    color: #6b7280;
+}
+
+.dark-mode .driver-info {
+    color: #9ca3af;
+}
+
+.driver-info strong {
+    color: var(--text-color);
+}
+
+/* Badges and tags */
+.points-badge {
+    background-color: var(--text-color);
+    color: var(--bg-color);
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 700;
+    display: inline-block;
+    font-family: 'Racing Sans One', sans-serif;
+    letter-spacing: 0.5px;
+}
+
+.dark-mode .points-badge {
+    background-color: var(--accent-red);
+    color: white;
+}
+
+/* Utilities */
+.hidden {
+    display: none !important;
 }
 
 .status-message {
@@ -45,129 +207,22 @@ main {
     font-size: 1.25rem;
     margin-top: 3rem;
     color: var(--text-color);
+    font-weight: 500;
 }
 
 .status-message.error {
     color: var(--accent-red);
 }
 
-.hidden {
-    display: none !important;
-}
-
-.dashboard {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.5rem;
-}
-
-.driver-card {
-    background-color: var(--card-bg);
-    border-radius: 8px;
-    padding: 1.5rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease-in-out;
-    border-top: 4px solid var(--accent-red);
-}
-
-.driver-card:hover {
-    transform: translateY(-5px);
-}
-
-.driver-card h2 {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-}
-
-.driver-info {
-    margin-bottom: 5px;
-    font-size: 1rem;
-    color: #555;
-}
-
-.driver-info strong {
-    color: var(--text-color);
-}
-
-.points-badge {
-    background-color: var(--text-color);
-    color: white;
-    padding: 0.3rem 0.6rem;
-    border-radius: 4px;
+/* Footer */
+footer {
+    text-align: center;
+    padding: 2rem;
+    color: #6b7280;
     font-size: 0.9rem;
-    font-weight: bold;
-    display: inline-block;
-    margin-top: 10px;
+    margin-top: 2rem;
 }
 
-.controls-container {
-    margin-top: 1rem;
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-
-.search-bar {
-    padding: 0.5rem 1rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1rem;
-    width: 100%;
-    max-width: 300px;
-}
-
-.btn {
-    padding: 0.5rem 1rem;
-    background-color: #333;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.2s;
-}
-
-.btn:hover {
-    background-color: #555;
-}
-
-.dark-mode {
-    --bg-color: #121212;
-    --text-color: #ffffff;
-    --card-bg: #1e1e1e;
-}
-
-.dark-mode .driver-card {
-    border-color: #333;
-    border-top: 4px solid var(--accent-red);
-}
-
-.dark-mode .driver-info {
-    color: #bbb;
-}
-
-.dark-mode .search-bar {
-    background-color: #333;
-    color: white;
-    border-color: #555;
-}
-
-.active-tab {
-    background-color: var(--accent-red);
-    color: white;
-    border-bottom: 2px solid white;
-}
-
-.dark-mode .btn {
-    color: white; 
-}
-
-.dark-mode .active-tab {
-    background-color: #ff3333;
-}
-
-.dark-mode .points-badge {
-    background-color: #444;
-    color: #fff;
+.dark-mode footer {
+    color: #9ca3af;
 }
